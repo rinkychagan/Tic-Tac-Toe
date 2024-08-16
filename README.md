@@ -9,7 +9,9 @@
 <ul>
 <li>Interactive Gameplay: Play the classic game of Tic Tac Toe with two players.</li>
 <li>Current Player Display: The interface clearly shows whose turn it is.</li>
-<li>Win/Loss/Draw Detection: Automatically determines and displays the game outcome.</li>
+<li>Restart</li>
+<li>Shows the winner</li>
+<li>If the game has finished</li>
 </ul>
 
 <h4>Tools</h4>
