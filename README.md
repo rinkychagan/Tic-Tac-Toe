@@ -2,6 +2,9 @@
 <h4>Overview</h4>
 <p>The Tic Tac Toe game was created during a Bootcamp challenge as a collaborative project. This game allows two players to engage in a classic game of Tic Tac Toe, with features that include tracking the current player and determining the winner or if the game results in a draw. The project was developed using React, showcasing fundamental skills in building interactive user interfaces.</p>
 
+![tictactoe](https://github.com/user-attachments/assets/e4c08d40-4075-4ad3-9dde-44177f0760b2)
+
+
 <h4>Features</h4>
 <ul>
 <li>Interactive Gameplay: Play the classic game of Tic Tac Toe with two players.</li>
