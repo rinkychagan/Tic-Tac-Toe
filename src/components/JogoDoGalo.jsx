@@ -1,8 +1,6 @@
-//Cria aqui o teu componente
+import { useState, useEffect } from "react";
 import { useJogoDoGalo } from "../hooks/useJogoDoGalo";
-import styles from "../styles/JogoDoGalo.module.css";
 
-const casaVazia = " ";
 export function JogoDoGalo() {
   const {
     jogo,
@@ -12,161 +10,96 @@ export function JogoDoGalo() {
     reiniciarJogo,
   } = useJogoDoGalo();
 
+  const [previousWinner, setPreviousWinner] = useState(null);
+  const winner = verificarVencedor(jogo);
+
+  useEffect(() => {
+    if (winner) {
+      setPreviousWinner(winner);
+    }
+  }, [winner]);
+
+  const handleRestart = () => {
+    reiniciarJogo();
+  };
+
   return (
-    <div className={styles.wrapper}>
-      <div className="">
-        <div>
-          <div className="flex justify-center mb-2 font-bold ">
-            Current Player:
-            <span className="text-black"> {jogo.jogadorAtual}</span>
-          </div>
-          <div className="border-4  rounded-lg border-black p-2 mb-4">
-            <div className={styles.row}>
-              <div>
-                <button
-                  className={`${styles.cell} ${
-                    jogo.tabuleiro[0][0] === "X"
-                      ? styles.cellX
-                      : jogo.tabuleiro[0][0] === "O"
-                      ? styles.cellO
-                      : ""
-                  }`}
-                  onClick={() => adicionarJogada(jogo, jogo.jogadorAtual, 0, 0)}
-                >
-                  {jogo.tabuleiro[0][0]}
-                </button>
+    <div
+      className={`min-h-screen flex flex-col justify-center items-center transition-colors duration-500 ${
+        winner === "X"
+          ? "bg-gradient-to-b from-amber-300 to-amber-200"
+          : winner === "O"
+          ? "bg-gradient-to-b from-rose-300 to-rose-200"
+          : "bg-teal-200"
+      }`}
+    >
+      <div className="text-center mb-4">
+        <div className="mb-2 font-bold text-2xl">
+          {winner ? (
+            <>
+              Winner: <span className="text-black">{winner}</span>
+            </>
+          ) : (
+            <>
+              Current Player:{" "}
+              <span className="text-black">{jogo.jogadorAtual}</span>
+            </>
+          )}
+        </div>
+        <div className="border-4 rounded-lg border-black p-4 mb-4 shadow-lg bg-cyan-500">
+          <div className="flex flex-col gap-2">
+            {jogo.tabuleiro.map((row, rowIndex) => (
+              <div key={rowIndex} className="flex gap-2">
+                {row.map((cell, cellIndex) => (
+                  <button
+                    key={cellIndex}
+                    className={`flex justify-center items-center font-bold text-5xl w-20 h-20 rounded-lg border-4 transition-all duration-200 ${
+                      cell === "X"
+                        ? "bg-amber-200 text-amber-800"
+                        : cell === "O"
+                        ? "bg-rose-200 text-rose-800"
+                        : "bg-violet-500 text-violet-800"
+                    } border-black hover:shadow-xl cursor-pointer transform hover:scale-105`}
+                    onClick={() =>
+                      !winner &&
+                      adicionarJogada(
+                        jogo,
+                        jogo.jogadorAtual,
+                        rowIndex,
+                        cellIndex
+                      )
+                    }
+                    disabled={!!winner}
+                  >
+                    {cell}
+                  </button>
+                ))}
               </div>
-              <div>
-                <button
-                  className={`${styles.cell} ${
-                    jogo.tabuleiro[0][1] === "X"
-                      ? styles.cellX
-                      : jogo.tabuleiro[0][1] === "O"
-                      ? styles.cellO
-                      : ""
-                  }`}
-                  onClick={() => adicionarJogada(jogo, jogo.jogadorAtual, 0, 1)}
-                >
-                  {jogo.tabuleiro[0][1]}
-                </button>
-              </div>
-              <div>
-                <button
-                  className={`${styles.cell} ${
-                    jogo.tabuleiro[0][2] === "X"
-                      ? styles.cellX
-                      : jogo.tabuleiro[0][2] === "O"
-                      ? styles.cellO
-                      : ""
-                  }`}
-                  onClick={() => adicionarJogada(jogo, jogo.jogadorAtual, 0, 2)}
-                >
-                  {jogo.tabuleiro[0][2]}
-                </button>
-              </div>
-            </div>
-            <div className={styles.row}>
-              <div>
-                <button
-                  className={`${styles.cell} ${
-                    jogo.tabuleiro[1][0] === "X"
-                      ? styles.cellX
-                      : jogo.tabuleiro[1][0] === "O"
-                      ? styles.cellO
-                      : ""
-                  }`}
-                  onClick={() => adicionarJogada(jogo, jogo.jogadorAtual, 1, 0)}
-                >
-                  {jogo.tabuleiro[1][0]}
-                </button>
-              </div>
-              <div>
-                <button
-                  className={`${styles.cell} ${
-                    jogo.tabuleiro[1][1] === "X"
-                      ? styles.cellX
-                      : jogo.tabuleiro[1][1] === "O"
-                      ? styles.cellO
-                      : ""
-                  }`}
-                  onClick={() => adicionarJogada(jogo, jogo.jogadorAtual, 1, 1)}
-                >
-                  {jogo.tabuleiro[1][1]}
-                </button>
-              </div>
-              <div>
-                <button
-                  className={`${styles.cell} ${
-                    jogo.tabuleiro[1][2] === "X"
-                      ? styles.cellX
-                      : jogo.tabuleiro[1][2] === "O"
-                      ? styles.cellO
-                      : ""
-                  }`}
-                  onClick={() => adicionarJogada(jogo, jogo.jogadorAtual, 1, 2)}
-                >
-                  {jogo.tabuleiro[1][2]}
-                </button>
-              </div>
-            </div>
-            <div className={styles.row}>
-              <div>
-                <button
-                  className={`${styles.cell} ${
-                    jogo.tabuleiro[2][0] === "X"
-                      ? styles.cellX
-                      : jogo.tabuleiro[2][0] === "O"
-                      ? styles.cellO
-                      : ""
-                  }`}
-                  onClick={() => adicionarJogada(jogo, jogo.jogadorAtual, 2, 0)}
-                >
-                  {jogo.tabuleiro[2][0]}
-                </button>
-              </div>
-              <div>
-                <button
-                  className={`${styles.cell} ${
-                    jogo.tabuleiro[2][1] === "X"
-                      ? styles.cellX
-                      : jogo.tabuleiro[2][1] === "O"
-                      ? styles.cellO
-                      : ""
-                  }`}
-                  onClick={() => adicionarJogada(jogo, jogo.jogadorAtual, 2, 1)}
-                >
-                  {jogo.tabuleiro[2][1]}
-                </button>
-              </div>
-              <div>
-                <button
-                  className={`${styles.cell} ${
-                    jogo.tabuleiro[2][2] === "X"
-                      ? styles.cellX
-                      : jogo.tabuleiro[2][2] === "O"
-                      ? styles.cellO
-                      : ""
-                  }`}
-                  onClick={() => adicionarJogada(jogo, jogo.jogadorAtual, 2, 2)}
-                >
-                  {jogo.tabuleiro[2][2]}
-                </button>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
 
       <div>
-        <button className="font-bold" onClick={() => reiniciarJogo()}>
+        <button
+          className="font-bold bg-emerald-500 border-4 border-black text-black px-6 py-2 rounded shadow hover:bg-emerald-600 transition duration-200"
+          onClick={handleRestart}
+        >
           Restart
         </button>
       </div>
-      <div>
-        Has the game finished?
-        {verificarFimDoJogo(jogo) === true ? " Yes" : " No"}
+      <div className="mt-4 text-lg">
+        Has the game finished?{" "}
+        <span className="font-semibold">
+          {verificarFimDoJogo(jogo) ? "Yes" : "No"}
+        </span>
       </div>
-      <div>Winner: {verificarVencedor(jogo)}</div>
+      <div className="mt-2 text-lg">
+        Previous Winner:{" "}
+        <span className="font-semibold">
+          {previousWinner ? previousWinner : "None"}
+        </span>
+      </div>
     </div>
   );
 }
